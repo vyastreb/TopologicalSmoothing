@@ -14,20 +14,31 @@ The algorithm smooths jagged boundaries while **preserving topology** - all conn
 
 ## More Examples
 
-### Example 1: Complex Structure
+### Example 1: Flying heron
 | Input | Output |
 |:-----:|:------:|
 | <img src="img/input_1.png" width="300"> | <img src="img/output_1_r10.png" width="300"> |
 
-### Example 2: Simple Shape (Connectivity Comparison)
+### Example 2: QR-code (Connectivity Comparison)
 | Input | Output (C8) | Output (C4) |
 |:-----:|:-----------:|:-----------:|
 | <img src="img/input_3.png" width="200"> | <img src="img/output_3.png" width="200"> | <img src="img/output_3c4.png" width="200"> |
 
-### Example 3: Organic Form
+### Example 3: Trees
 | Input | Output |
 |:-----:|:------:|
 | <img src="img/input_4.png" width="300"> | <img src="img/output_4.png" width="300"> |
+
+### Example 4: Pixelized stains #2
+| Input | Output |
+|:-----:|:------:|
+| <img src="img/input_6.png" width="300"> | <img src="img/output_6_r10.png" width="300"> |
+
+### Example 5: Pixelized stains #1
+| Input | Output |
+|:-----:|:------:|
+| <img src="img/input_5.png" width="300"> | <img src="img/output_5_r10.png" width="300"> |
+
 
 ## Reference
 
