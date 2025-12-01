@@ -6,7 +6,7 @@ A Python implementation of the Alternate Sequential Filter controlled by Topolog
 
 | Original | Smoothed (ASFT-MED) | Smoothed (ASFT) |
 |:--------:|:-------------------:|:---------------:|
-| <img src="einstein_original.png" height="300"> | <img src="einstein_smoothed.png" height="300"> | <img src="einstein_smoothed_ASFT_pure.png" height="300"> |
+| <img src="img/einstein_original.png" height="300"> | <img src="img/einstein_smoothed.png" height="300"> | <img src="img/einstein_smoothed_ASFT_pure.png" height="300"> |
 
 *Smoothed with: `-s 1 -r 3 -c 4 --medial`* for ASFT-MED and with the same parameters for the pure ASFT.
 
@@ -17,17 +17,17 @@ The algorithm smooths jagged boundaries while **preserving topology** - all conn
 ### Example 1: Complex Structure
 | Input | Output |
 |:-----:|:------:|
-| <img src="input_1.png" width="300"> | <img src="output_1.png" width="300"> |
+| <img src="img/input_1.png" width="300"> | <img src="img/output_1.png" width="300"> |
 
 ### Example 2: Simple Shape (Connectivity Comparison)
 | Input | Output (C8) | Output (C4) |
 |:-----:|:-----------:|:-----------:|
-| <img src="input_3.png" width="200"> | <img src="output_3.png" width="200"> | <img src="output_3c4.png" width="200"> |
+| <img src="img/input_3.png" width="200"> | <img src="img/output_3.png" width="200"> | <img src="img/output_3c4.png" width="200"> |
 
 ### Example 3: Organic Form
 | Input | Output |
 |:-----:|:------:|
-| <img src="input_4.png" width="300"> | <img src="output_4.png" width="300"> |
+| <img src="img/input_4.png" width="300"> | <img src="img/output_4.png" width="300"> |
 
 ## Reference
 
