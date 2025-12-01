@@ -2,13 +2,12 @@
 
 A Python implementation of the Alternate Sequential Filter controlled by Topology (ASFT) algorithm for smoothing binary images while preserving their topology (number of connected components and holes).
 
-## Example: Einstein Image
+## Example: Portrait
 
-| Original | Smoothed (ASFT-MED) | Smoothed (ASFT) |
-|:--------:|:-------------------:|:---------------:|
-| <img src="img/einstein_original.png" height="300"> | <img src="img/einstein_smoothed_r10.png" height="300"> | <img src="img/einstein_smoothed_ASFT_pure.png" height="300"> |
+| Input | Output |
+|:-----:|:------:|
+| <img src="img/input_0c.png" width="300"> | <img src="img/output_0c.png" width="300"> |
 
-*Smoothed with: `-s 1 -r 3 -c 4 --medial`* for ASFT-MED and with the same parameters for the pure ASFT.
 
 The algorithm smooths jagged boundaries while **preserving topology** - all connected components and holes from the original image are maintained.
 
@@ -39,6 +38,14 @@ The algorithm smooths jagged boundaries while **preserving topology** - all conn
 |:-----:|:------:|
 | <img src="img/input_4.png" width="300"> | <img src="img/output_4.png" width="300"> |
 
+### Example 6: Einstein with a pipe
+
+| Original | Smoothed (ASFT-MED) | Smoothed (ASFT) |
+|:--------:|:-------------------:|:---------------:|
+| <img src="img/einstein_original.png" height="300"> | <img src="img/einstein_smoothed_r10.png" height="300"> | <img src="img/einstein_smoothed_ASFT_pure.png" height="300"> |
+
+*Smoothed with: `-s 1 -r 3 -c 4 --medial`* for ASFT-MED and with the same parameters for the pure ASFT.
+
 
 ## Reference
 
@@ -50,7 +57,7 @@ See also the dedicated web-page:
 
 ## Installation
 
-### From PyPI (when published)
+### From PyPI
 
 ```bash
 # Recommended installation (includes numba for 10-100x speedup)
@@ -211,7 +218,7 @@ toposmooth test/einstein.pgm py_output.pgm -s 1 -r 3 -c 4
 Run `python test_shapes.py` to generate comparison panels for various test shapes:
 
 1. **Rectangle** - Grid-aligned rectangle
-2. **Square** - Grid-aligned square  
+2. **Square** - Grid-aligned square
 3. **L-Shape** - Grid-aligned L shape
 4. **Squares Edge Touch** - Two squares sharing a full edge (1 component for both connectivities)
 5. **Squares Single Point Touch** - Two squares touching at exactly one 4-neighbor pixel (1 component for both)
