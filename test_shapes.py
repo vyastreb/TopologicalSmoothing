@@ -11,7 +11,7 @@ Creates various test shapes and compares results across different parameters:
 import numpy as np
 from PIL import Image, ImageDraw, ImageFont
 import os
-from topology_smoothing import (
+from toposmooth import (
     asft, asftmed, binarize_image, scale_binary_image
 )
 

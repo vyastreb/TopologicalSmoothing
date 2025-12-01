@@ -1,0 +1,76 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "toposmooth"
+version = "1.0.0"
+description = "Topology-Preserving Image Smoothing using ASFT algorithm"
+readme = "README.md"
+license = "GPL-2.0"
+authors = [
+    {name = "Claude Opus 4.5"},
+    {name = "Vladislav A. Yastrebov", email = "vladislav.yastrebov@minesparis.psl.eu"},
+]
+maintainers = [
+    {name = "Vladislav A. Yastrebov", email = "vladislav.yastrebov@minesparis.psl.eu"},
+]
+keywords = [
+    "image-processing",
+    "topology",
+    "smoothing",
+    "binary-images",
+    "morphology",
+    "homotopy",
+    "asft",
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Science/Research",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Image Processing",
+    "Topic :: Scientific/Engineering :: Mathematics",
+]
+requires-python = ">=3.8"
+dependencies = [
+    "numpy>=1.20.0",
+    "scipy>=1.7.0",
+    "Pillow>=8.0.0",
+]
+
+[project.optional-dependencies]
+fast = [
+    "numba>=0.54.0",
+]
+dev = [
+    "pytest>=7.0.0",
+    "numba>=0.54.0",
+]
+
+[project.scripts]
+toposmooth = "toposmooth.__main__:main"
+
+[project.urls]
+Homepage = "https://github.com/vyastrebov/toposmooth"
+Documentation = "https://github.com/vyastrebov/toposmooth#readme"
+Repository = "https://github.com/vyastrebov/toposmooth.git"
+Issues = "https://github.com/vyastrebov/toposmooth/issues"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["toposmooth*"]
+
+[tool.setuptools.package-data]
+toposmooth = ["py.typed"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+

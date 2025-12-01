@@ -50,15 +50,35 @@ See also the dedicated web-page:
 
 ## Installation
 
+### From PyPI (when published)
+
 ```bash
-pip install -r requirements.txt
+# Recommended installation (includes numba for 10-100x speedup)
+pip install toposmooth[fast]
+
+# If you have issues installing numba (e.g., unsupported platform):
+pip install toposmooth
 ```
 
-Required packages:
+### From Source
+
+```bash
+# Clone the repository
+git clone https://github.com/vyastrebov/toposmooth.git
+cd toposmooth
+
+# Recommended: install with numba
+pip install -e ".[fast]"
+
+# Without numba (if installation fails):
+pip install -e .
+```
+
+### Required packages
 - numpy
-- scipy
+- scipy  
 - Pillow
-- numba (optional but highly recommended for 10-100x speedup)
+- numba (included with `[fast]`, provides 10-100x speedup)
 
 ## Supported Image Formats
 
@@ -76,15 +96,20 @@ The output format is automatically determined by the file extension.
 
 ### Command Line
 
+After installation, you can use the `toposmooth` command or run as a Python module:
+
 ```bash
-# Basic usage (PNG input/output)
-python topology_smoothing.py input.png output.png
+# Using the installed command
+toposmooth input.png output.png
+
+# Or using Python module syntax
+python -m toposmooth input.png output.png
 
 # Match C asftmed command: ./asftmed input.pgm 4 3 output.pgm
-python topology_smoothing.py input.pgm output.pgm -s 1 -r 3 -c 4
+toposmooth input.pgm output.pgm -s 1 -r 3 -c 4
 
 # With all options
-python topology_smoothing.py input.jpg output.png \
+toposmooth input.jpg output.png \
     -s 1           # Scale factor (default: 4, use 1 to match input dimensions)
     -r 5           # Maximum smoothing radius (default: 5)
     -c 4           # Connectivity for white value (1): 4 (neighbor) or 8 (next-neighbour)
@@ -92,12 +117,15 @@ python topology_smoothing.py input.jpg output.png \
     --medial       # Use medial axis constraints - strictly preserves the form (default, recommended)
     --no-medial    # Use plain ASFT without medial axis constraints (removes small features)
     --save-binary binary.png  # Save the binarized input image
+
+# Show version
+toposmooth --version
 ```
 
 ### Python API
 
 ```python
-from topology_smoothing import topology_preserving_smooth, load_image, asftmed
+from toposmooth import topology_preserving_smooth, load_image, asftmed
 from PIL import Image
 import numpy as np
 
@@ -161,10 +189,10 @@ Standard ASFT without constraints. May lose very thin features.
 
 ## Performance
 
-- With numba installed: ~1-2 seconds for a 520×372 image with scale=1, radius=3
-- Without numba: Much slower (not recommended for large images), do not use without numba.
-
-The algorithm scales roughly as O(scale² × rmax × width × height).
+- **With numba** (`pip install toposmooth[fast]`): ~1-2 seconds for a 520×372 image with scale=1, radius=3
+- **Without numba**: Much slower (minutes instead of seconds) - only use if numba won't install
+- The algorithm scales roughly as O(scale² × rmax × width × height)
+- First run with numba may take a few seconds for JIT compilation
 
 ## Validation
 
@@ -172,10 +200,10 @@ The Python implementation produces **pixel-perfect results** matching the [C imp
 
 ```bash
 # C version
-.asftmed test/einstein.pgm 4 3 c_output.pgm
+./asftmed test/einstein.pgm 4 3 c_output.pgm
 
 # Python version
-python topology_smoothing.py test/einstein.pgm py_output.pgm -s 1 -r 3 -c 4
+toposmooth test/einstein.pgm py_output.pgm -s 1 -r 3 -c 4
 ```
 
 ## Test Shapes
@@ -204,8 +232,8 @@ Results are saved to `test_results/` folder, including `all_tests_overview.png` 
 
 ### Information
 
-**Authors:** Claude Opus 4.5 in Cursor environment (mainly), Vladislav A. Yastrebov (marginally)
-**Validator:** Vladislav A. Yastrebov (CNRS, Mines Paris)
-**License:** GPL-2.0
-**Date:** Nov-Dec 2025
++ **Authors:** Claude Opus 4.5 in Cursor environment (mainly), Vladislav A. Yastrebov (marginally)
++ **Validator:** Vladislav A. Yastrebov (CNRS, Mines Paris)
++ **License:** GPL-2.0
++ **Date:** Nov-Dec 2025
 

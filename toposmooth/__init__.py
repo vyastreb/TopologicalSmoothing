@@ -14,8 +14,10 @@ This algorithm smooths binary images while preserving their topology.
 import numpy as np
 from scipy import ndimage
 from typing import Tuple, Optional
-import argparse
 from PIL import Image
+
+__version__ = "1.0.0"
+__author__ = "Claude Opus 4.5, Vladislav A. Yastrebov"
 
 try:
     from numba import jit
@@ -884,45 +886,35 @@ def topology_preserving_smooth(
     return smoothed, binary
 
 
-# ============================================================================
-# COMMAND LINE INTERFACE
-# ============================================================================
+# Public API
+__all__ = [
+    # Version info
+    '__version__',
+    '__author__',
+    'HAS_NUMBA',
+    
+    # Main functions
+    'topology_preserving_smooth',
+    'asft',
+    'asftmed',
+    
+    # Homotopic operations
+    'homotopic_thinning',
+    'homotopic_thickening',
+    'hp_closing_disk',
+    'hp_opening_disk',
+    'cond_hp_closing_disk',
+    'cond_hp_opening_disk',
+    
+    # Morphological operations
+    'binary_dilate_disk',
+    'binary_erode_disk',
+    'medial_axis_meyer',
+    
+    # Image utilities
+    'load_image',
+    'save_image',
+    'binarize_image',
+    'scale_binary_image',
+]
 
-def main():
-    parser = argparse.ArgumentParser(description="Topology-Preserving Image Smoothing")
-    parser.add_argument("input", help="Input image file")
-    parser.add_argument("output", help="Output smoothed image file")
-    parser.add_argument("-s", "--scale", type=int, default=4)
-    parser.add_argument("-r", "--radius", type=int, default=5)
-    parser.add_argument("-c", "--connex", type=int, choices=[4, 8], default=8)
-    parser.add_argument("-t", "--threshold", type=float, default=None)
-    parser.add_argument("--save-binary", type=str, default=None)
-    parser.add_argument("--medial", dest="use_medial", action="store_true", default=True,
-                        help="Use medial axis constraints (asftmed, default)")
-    parser.add_argument("--no-medial", dest="use_medial", action="store_false",
-                        help="Don't use medial axis constraints (plain asft)")
-    
-    args = parser.parse_args()
-    
-    if not HAS_NUMBA:
-        print("WARNING: numba not installed. Algorithm will be SLOW.")
-    
-    print(f"Loading {args.input}...")
-    img = load_image(args.input)
-    print(f"  Image shape: {img.shape}")
-    
-    smoothed, binary = topology_preserving_smooth(
-        img, args.scale, args.radius, args.connex, args.threshold, args.use_medial
-    )
-    
-    print(f"Saving smoothed image to {args.output}...")
-    save_image(smoothed, args.output)
-    
-    if args.save_binary:
-        save_image(binary, args.save_binary)
-    
-    print("Done!")
-
-
-if __name__ == "__main__":
-    main()
