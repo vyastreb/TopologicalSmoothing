@@ -197,3 +197,9 @@ Results are saved to `test_results/` folder, including `all_tests_overview.png` 
 ### Sample Test Result
 
 ![Test Overview](test_results/all_tests_overview.png)
+
+### Information
+
+**Author:** Claude Opus 4.5 in Cursor environment
+**Validator:** Vladislav A. Yastrebov (CNRS, Mines Paris)
+**Date:** Nov-Dec 2025
