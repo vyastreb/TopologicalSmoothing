@@ -6,7 +6,7 @@ A Python implementation of the Alternate Sequential Filter controlled by Topolog
 
 | Original | Smoothed (ASFT-MED) | Smoothed (ASFT) |
 |:--------:|:-------------------:|:---------------:|
-| <img src="img/einstein_original.png" height="300"> | <img src="img/einstein_smoothed.png" height="300"> | <img src="img/einstein_smoothed_ASFT_pure.png" height="300"> |
+| <img src="img/einstein_original.png" height="300"> | <img src="img/einstein_smoothed_r10.png" height="300"> | <img src="img/einstein_smoothed_ASFT_pure.png" height="300"> |
 
 *Smoothed with: `-s 1 -r 3 -c 4 --medial`* for ASFT-MED and with the same parameters for the pure ASFT.
 
@@ -17,7 +17,7 @@ The algorithm smooths jagged boundaries while **preserving topology** - all conn
 ### Example 1: Complex Structure
 | Input | Output |
 |:-----:|:------:|
-| <img src="img/input_1.png" width="300"> | <img src="img/output_1.png" width="300"> |
+| <img src="img/input_1.png" width="300"> | <img src="img/output_1_r10.png" width="300"> |
 
 ### Example 2: Simple Shape (Connectivity Comparison)
 | Input | Output (C8) | Output (C4) |
@@ -75,11 +75,11 @@ python topology_smoothing.py input.pgm output.pgm -s 1 -r 3 -c 4
 # With all options
 python topology_smoothing.py input.jpg output.png \
     -s 1           # Scale factor (default: 4, use 1 to match input dimensions)
-    -r 3           # Maximum smoothing radius (default: 3)
-    -c 4           # Connectivity: 4 (neighbor) or 8 (next-neighbour)
-    -t 128         # Binarization threshold (default: mean intensity)
-    --medial       # Use medial axis constraints (default, recommended)
-    --no-medial    # Use plain ASFT without medial axis constraints
+    -r 5           # Maximum smoothing radius (default: 5)
+    -c 4           # Connectivity for white value (1): 4 (neighbor) or 8 (next-neighbour)
+    -t 128         # Binarization threshold (default: mean intensity, if the input is not binary)
+    --medial       # Use medial axis constraints - strictly preserves the form (default, recommended)
+    --no-medial    # Use plain ASFT without medial axis constraints (removes small features)
     --save-binary binary.png  # Save the binarized input image
 ```
 
@@ -95,7 +95,7 @@ img = load_image('input.png')
 smoothed, binary = topology_preserving_smooth(
     img,
     scale=1,           # Scale factor (1 = no scaling, matches C)
-    smooth_radius=3,   # Maximum ASFT radius
+    smooth_radius=5,   # Maximum ASFT radius
     connex=4,          # Object connectivity (4 or 8)
     threshold=None,    # Binarization threshold (None = mean)
     use_medial=True    # Use medial axis constraints (recommended)
@@ -109,11 +109,11 @@ Image.fromarray(smoothed).save('output.pgm')   # PGM
 
 ## Parameters
 
-- **scale**: Integer scaling factor. The image is upscaled before smoothing to allow sub-pixel smoothing. Use `scale=1` to match the original image dimensions.
+- **scale**: Integer scaling factor. The image is upscaled before smoothing to allow sub-pixel smoothing with respect to original pixel size. Use `scale=1` to match the original image dimensions.
 
-- **smooth_radius (rmax)**: Maximum radius of disk structuring elements. The algorithm applies opening/closing operations with disks of radius 1, 2, ..., rmax. Larger values produce smoother results but take longer.
+- **smooth_radius (rmax)**: Maximum radius of disk structuring elements. The algorithm applies opening/closing operations with disks of radius 1, 2, ..., rmax. Larger values produce smoother results but take longer (linear complexity with rmax), but the default value rmax=5 produces already very good results.
 
-- **connex**: Object connectivity (4 or 8). For 8-connectivity, diagonal neighbors (white pixels) are considered connected.
+- **connex**: Object connectivity (4 or 8). For 8-connectivity, diagonal neighbors (white pixels, value=1) are considered connected.
 
 - **threshold**: Binarization threshold. Pixels above this value become foreground (255), others become background (0). If None, uses the mean intensity.
 
@@ -151,13 +151,13 @@ Standard ASFT without constraints. May lose very thin features.
 ## Performance
 
 - With numba installed: ~1-2 seconds for a 520×372 image with scale=1, radius=3
-- Without numba: Much slower (not recommended for large images)
+- Without numba: Much slower (not recommended for large images), do not use without numba.
 
 The algorithm scales roughly as O(scale² × rmax × width × height).
 
 ## Validation
 
-The Python implementation produces **pixel-perfect results** matching the [C implementation](https://perso.esiee.fr/~coupriem/ts/TS_programs.html).
+The Python implementation produces **pixel-perfect results** matching the [C implementation](https://perso.esiee.fr/~coupriem/ts/TS_programs.html) for Einstein's binary portrait.
 
 ```bash
 # C version
@@ -165,14 +165,7 @@ The Python implementation produces **pixel-perfect results** matching the [C imp
 
 # Python version
 python topology_smoothing.py test/einstein.pgm py_output.pgm -s 1 -r 3 -c 4
-
-# Result: 0 pixels different (100% match)
 ```
-
-Tested with:
-- `test/einstein.pgm` (520×372 pixels)
-- Connectivity: 4 and 8
-- Radius: 1-5
 
 ## Test Shapes
 
@@ -200,6 +193,8 @@ Results are saved to `test_results/` folder, including `all_tests_overview.png` 
 
 ### Information
 
-**Author:** Claude Opus 4.5 in Cursor environment
+**Authors:** Claude Opus 4.5 in Cursor environment (mainly), Vladislav A. Yastrebov (marginally)
 **Validator:** Vladislav A. Yastrebov (CNRS, Mines Paris)
+**License:** GPL-2.0
 **Date:** Nov-Dec 2025
+

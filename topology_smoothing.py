@@ -853,7 +853,7 @@ def binarize_image(img: np.ndarray, threshold: Optional[float] = None) -> np.nda
 def topology_preserving_smooth(
     img: np.ndarray,
     scale: int = 4,
-    smooth_radius: int = 3,
+    smooth_radius: int = 5,
     connex: int = 8,
     threshold: Optional[float] = None,
     use_medial: bool = True
@@ -893,7 +893,7 @@ def main():
     parser.add_argument("input", help="Input image file")
     parser.add_argument("output", help="Output smoothed image file")
     parser.add_argument("-s", "--scale", type=int, default=4)
-    parser.add_argument("-r", "--radius", type=int, default=3)
+    parser.add_argument("-r", "--radius", type=int, default=5)
     parser.add_argument("-c", "--connex", type=int, choices=[4, 8], default=8)
     parser.add_argument("-t", "--threshold", type=float, default=None)
     parser.add_argument("--save-binary", type=str, default=None)
