@@ -28,17 +28,22 @@ The algorithm smooths jagged boundaries while **preserving topology** - all conn
 |:-----:|:-----------:|:-----------:|
 | <img src="img/input_3.png" width="200"> | <img src="img/output_3.png" width="200"> | <img src="img/output_3c4.png" width="200"> |
 
-### Example 4: Flying heron
+### Example 4: Microstructure
+| Input | Output (C8) |
+|:-----:|:-----------:|
+| <img src="img/micro_1b.png" width="300"> | <img src="img/micro_1b_out.png" width="300"> |
+
+### Example 5: Flying heron
 | Input | Output |
 |:-----:|:------:|
-| <img src="img/input_1.png" width="300"> | <img src="img/output_1_r10.png" width="300"> |
+| <img src="img/input_1b.png" width="300"> | <img src="img/output_1b.png" width="300"> |
 
-### Example 5: Trees
+### Example 6: Trees
 | Input | Output |
 |:-----:|:------:|
 | <img src="img/input_4.png" width="300"> | <img src="img/output_4.png" width="300"> |
 
-### Example 6: Einstein with a pipe
+### Example 7: Einstein with a pipe
 
 | Original | Smoothed (ASFT-MED) | Smoothed (ASFT) |
 |:--------:|:-------------------:|:---------------:|
