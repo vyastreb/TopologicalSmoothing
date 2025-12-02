@@ -16,7 +16,7 @@ from scipy import ndimage
 from typing import Tuple, Optional
 from PIL import Image
 
-__version__ = "1.0.0"
+__version__ = "1.0.1"
 __author__ = "Claude Opus 4.5, Vladislav A. Yastrebov"
 
 try:
@@ -884,6 +884,73 @@ def topology_preserving_smooth(
         smoothed = asft(scaled, connex, smooth_radius)
     
     return smoothed, binary
+
+
+# ============================================================================
+# EAGER COMPILATION (Pre-compile JIT functions at import time)
+# ============================================================================
+
+def _warmup_jit_functions():
+    """
+    Pre-compile all Numba JIT functions by calling them with small dummy data.
+    This ensures no compilation overhead during actual use.
+    """
+    if not HAS_NUMBA:
+        return
+    
+    # Create small dummy image for warmup (5x5 is sufficient)
+    dummy_img = np.array([
+        [0, 0, 0, 0, 0],
+        [0, 255, 255, 255, 0],
+        [0, 255, 0, 255, 0],
+        [0, 255, 255, 255, 0],
+        [0, 0, 0, 0, 0],
+    ], dtype=np.int32)
+    
+    # Warmup mask functions (called at center pixel)
+    _get_mask_ge(dummy_img, 2, 2)
+    _get_mask_le(dummy_img, 2, 2)
+    _get_mask_lt(dummy_img, 2, 2)
+    _get_mask_gt(dummy_img, 2, 2)
+    
+    # Warmup alpha functions
+    _alpha8m(dummy_img, 2, 2)
+    _alpha8p(dummy_img, 2, 2)
+    
+    # Warmup destructibility/constructibility tests
+    _pdestr4(dummy_img, TOPO_TAB, 2, 2)
+    _pdestr8(dummy_img, TOPO_TAB, 2, 2)
+    _pconstr4(dummy_img, TOPO_TAB, 2, 2)
+    _pconstr8(dummy_img, TOPO_TAB, 2, 2)
+    
+    # Warmup delta functions (need writable copy)
+    dummy_copy = dummy_img.copy()
+    _delta4m(dummy_copy, TOPO_TAB, 2, 2)
+    dummy_copy = dummy_img.copy()
+    _delta8m(dummy_copy, TOPO_TAB, 2, 2)
+    dummy_copy = dummy_img.copy()
+    _delta4p(dummy_copy, TOPO_TAB, 2, 2)
+    dummy_copy = dummy_img.copy()
+    _delta8p(dummy_copy, TOPO_TAB, 2, 2)
+    
+    # Warmup compute delta wrappers
+    _compute_delta_m(dummy_img.copy(), TOPO_TAB, 2, 2, True)
+    _compute_delta_m(dummy_img.copy(), TOPO_TAB, 2, 2, False)
+    _compute_delta_p(dummy_img.copy(), TOPO_TAB, 2, 2, True)
+    _compute_delta_p(dummy_img.copy(), TOPO_TAB, 2, 2, False)
+    
+    # Warmup main homotopic operations (these are the most complex)
+    dummy_target = np.zeros_like(dummy_img)
+    _lhthindelta(dummy_img.copy(), dummy_target, TOPO_TAB, 4)
+    _lhthindelta(dummy_img.copy(), dummy_target, TOPO_TAB, 8)
+    
+    dummy_target_thick = np.full_like(dummy_img, 255)
+    _lhthickdelta(dummy_img.copy(), dummy_target_thick, TOPO_TAB, 4)
+    _lhthickdelta(dummy_img.copy(), dummy_target_thick, TOPO_TAB, 8)
+
+
+# Run warmup at import time
+_warmup_jit_functions()
 
 
 # Public API

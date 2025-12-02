@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "toposmooth"
-version = "1.0.0"
+version = "1.0.3"
 description = "Topology-Preserving Image Smoothing using ASFT algorithm"
 readme = "README.md"
 license = "GPL-2.0"
@@ -58,10 +58,10 @@ dev = [
 toposmooth = "toposmooth.__main__:main"
 
 [project.urls]
-Homepage = "https://github.com/vyastrebov/toposmooth"
-Documentation = "https://github.com/vyastrebov/toposmooth#readme"
-Repository = "https://github.com/vyastrebov/toposmooth.git"
-Issues = "https://github.com/vyastrebov/toposmooth/issues"
+Homepage = "https://github.com/vyastreb/TopologicalSmoothing"
+Documentation = "https://github.com/vyastreb/TopologicalSmoothing#readme"
+Repository = "https://github.com/vyastreb/TopologicalSmoothing.git"
+Issues = "https://github.com/vyastreb/TopologicalSmoothing/issues"
 
 [tool.setuptools.packages.find]
 where = ["."]
